@@ -8,7 +8,7 @@ import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
 public class TheTestServlet
 {
-    static final String APPLICATION_PATH = "/";
+    static final String APPLICATION_PATH = "/api";
     static final String CONTEXT_ROOT = "/";
 
     public static void main(String[] args) throws Exception
