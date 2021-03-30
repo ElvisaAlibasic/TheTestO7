@@ -7,14 +7,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/hello")
+@Path("/allie")
 @Produces(MediaType.TEXT_PLAIN)
 public class AdMediationRestResource {
 
     @GET
     @Path("/{param}")
     public Response printMessage(@PathParam("param") String msg) {
-        String result = "Hello " + msg + "!";
+        String result = "Yo " + msg + "!";
         return Response.status(200).entity(result).build();
     }
 }
