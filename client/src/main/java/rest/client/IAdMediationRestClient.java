@@ -13,11 +13,17 @@ import javax.ws.rs.core.Response;
 
 import rest.client.impl.dto.PriorityListRestEntry;
 
-import static rest.client.impl.IPropertyFlags.QUERY_PARAM_AD_TYPE_IDENTIFIER;
-import static rest.client.impl.IPropertyFlags.QUERY_PARAM_COUNTRY_CODE;
+import static base.service.api.IPropertyFlags.QUERY_PARAM_AD_TYPE_IDENTIFIER;
+import static base.service.api.IPropertyFlags.QUERY_PARAM_COUNTRY_CODE;
 
 public interface IAdMediationRestClient
 {
+    @GET
+    @Path("/sdk")
+    @Produces({ MediaType.APPLICATION_JSON })
+    String getRecommendedSDK(@QueryParam(QUERY_PARAM_AD_TYPE_IDENTIFIER) int adTypeIdentifier,
+        @QueryParam(QUERY_PARAM_COUNTRY_CODE) String countryCode);
+
     @GET
     @Path("/getInfo")
     @Produces({ MediaType.APPLICATION_JSON })

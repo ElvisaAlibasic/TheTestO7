@@ -17,6 +17,12 @@ import base.service.api.dto.IPriorityListEntry;
 import base.service.api.dto.impl.PriorityListEntry;
 import persistence.google.datastore.IDataStoreClient;
 
+/**
+ * Implementation of {@link IDataStoreClient}, represents persistence wrapper.
+ *
+ * @author Elvisa Alibasic
+ * @since 1.0.0
+ */
 public final class DataStoreService implements IDataStoreClient
 {
     private static final String PRIORITY_LIST_ENTRY_KIND = "PriorityListEntry";
@@ -24,33 +30,34 @@ public final class DataStoreService implements IDataStoreClient
     private static final String PROPERTY_AD_TYPE_ID = "adTypeId";
     private static final String PROPERTY_COUNTRY_CODE = "countryCode";
     private static final String PROPERTY_SCORE = "score";
+    private static final boolean SUCCESS = Boolean.TRUE;
 
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private final KeyFactory keyFactory = datastore.newKeyFactory().setKind(PRIORITY_LIST_ENTRY_KIND);
 
     @Override
-    public int updatePriorityList(LinkedList<IPriorityListEntry> priorityList)
+    public boolean updatePriorityList(LinkedList<IPriorityListEntry> priorityList)
     {
-
         for (IPriorityListEntry entry : priorityList)
         {
-
+            // we check whether the entry is already present in the database
             Query<Entity> query = Query.newEntityQueryBuilder().setKind(PRIORITY_LIST_ENTRY_KIND).setFilter(
                 CompositeFilter.and(PropertyFilter.eq(PROPERTY_AD_TYPE_ID, entry.getAdTypeIdentifier()),
                     PropertyFilter.eq(PROPERTY_COUNTRY_CODE, entry.getCountryCode()),
                     PropertyFilter.eq(PROPERTY_SDK_ID, entry.getSkdIdentifier()))).setOrderBy(
                 OrderBy.desc(PROPERTY_SCORE)).build();
 
-            Entity priorityListEntry = null;
             QueryResults<Entity> queryResultEntityList = datastore.run(query);
 
+            Entity priorityListEntry = null;
             if (queryResultEntityList.hasNext())
             {
                 priorityListEntry = queryResultEntityList.next();
+
+                // TODO corner case -> if there are more than one entries, we should at least log a warning.
             }
 
             Entity task;
-
             if (priorityListEntry == null)
             {
                 /* we create the entry if it doesn't exist */
@@ -62,11 +69,10 @@ public final class DataStoreService implements IDataStoreClient
                 task = Entity.newBuilder(taskKey).set(PROPERTY_SDK_ID, entry.getSkdIdentifier()).set(
                     PROPERTY_AD_TYPE_ID, entry.getAdTypeIdentifier()).set(PROPERTY_COUNTRY_CODE,
                     entry.getCountryCode()).set(PROPERTY_SCORE, entry.getScore()).build();
-
             }
             else
             {
-                //we update existing one
+                // else we update existing one
                 task = Entity.newBuilder(priorityListEntry.getKey()).set(PROPERTY_SDK_ID,
                     priorityListEntry.getProperties().get(PROPERTY_SDK_ID)).set(PROPERTY_AD_TYPE_ID,
                     priorityListEntry.getProperties().get(PROPERTY_AD_TYPE_ID)).set(PROPERTY_COUNTRY_CODE,
@@ -79,7 +85,8 @@ public final class DataStoreService implements IDataStoreClient
             datastore.put(task);
         }
 
-        return 1;
+        //TODO catch when is the operation unsuccessful and return false
+        return SUCCESS;
     }
 
     @Override

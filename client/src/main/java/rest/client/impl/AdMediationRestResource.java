@@ -20,8 +20,15 @@ import rest.client.impl.dto.PriorityListRestEntry;
 @Consumes({ MediaType.APPLICATION_JSON })
 public class AdMediationRestResource implements IAdMediationRestClient
 {
-    // this is wrong, service should be accessed via service orchestration
+    // TODO this is wrong, service should be accessed via service orchestration
     BaseManager baseManager = new BaseManager();
+
+    @Override
+    public String getRecommendedSDK(int adTypeIdentifier, String countryCode)
+    {
+        //TODO convert to human readable
+        return String.valueOf(baseManager.getRecommendedSDK(adTypeIdentifier, countryCode));
+    }
 
     @Override
     public List<PriorityListRestEntry> getPriorityList(int adTypeIdentifier, String countryCode)

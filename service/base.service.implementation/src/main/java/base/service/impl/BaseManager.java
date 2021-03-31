@@ -25,6 +25,14 @@ public class BaseManager implements IBaseService
     }
 
     @Override
+    public int getRecommendedSDK(int adTypeIdentifier, String countryCode)
+    {
+        LinkedList<IPriorityListEntry> priorityList = this.getPriorityList(adTypeIdentifier, countryCode);
+
+        return priorityList.get(0).getSkdIdentifier();
+    }
+
+    @Override
     public LinkedList<IPriorityListEntry> getPriorityList(int adTypeIdentifier, String countryCode)
     {
         return dataStoreService.getPriorityList(adTypeIdentifier, countryCode);
