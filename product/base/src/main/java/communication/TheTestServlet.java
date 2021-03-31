@@ -13,7 +13,7 @@ public class TheTestServlet
 
     public static void main(String[] args) throws Exception
     {
-        final int port = 80;
+        final int port = 8080;
         final Server server = new Server(port);
 
         final ServletContextHandler context = new ServletContextHandler(server, CONTEXT_ROOT);

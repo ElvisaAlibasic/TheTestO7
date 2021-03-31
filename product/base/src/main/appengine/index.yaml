@@ -1,0 +1,16 @@
+indexes:
+
+- kind: PriorityListEntry
+  properties:
+  - name: adTypeId
+  - name: countryCode
+  - name: sdkId
+  - name: score
+    direction: desc
+    
+- kind: PriorityListEntry
+  properties:
+  - name: adTypeId
+  - name: countryCode
+  - name: score
+    direction: desc    
