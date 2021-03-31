@@ -28,6 +28,7 @@ public final class DataStoreService implements IDataStoreClient
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private final KeyFactory keyFactory = datastore.newKeyFactory().setKind(PRIORITY_LIST_ENTRY_KIND);
 
+    @Override
     public int updatePriorityList(LinkedList<IPriorityListEntry> priorityList)
     {
 
@@ -42,8 +43,6 @@ public final class DataStoreService implements IDataStoreClient
 
             Entity priorityListEntry = null;
             QueryResults<Entity> queryResultEntityList = datastore.run(query);
-
-            System.out.println(queryResultEntityList);
 
             if (queryResultEntityList.hasNext())
             {
@@ -83,6 +82,7 @@ public final class DataStoreService implements IDataStoreClient
         return 1;
     }
 
+    @Override
     public LinkedList<IPriorityListEntry> getPriorityList(int adTypeIdentifier, String countryCode)
     {
         LinkedList<IPriorityListEntry> resultList = new LinkedList<>();
@@ -97,7 +97,6 @@ public final class DataStoreService implements IDataStoreClient
         while (queryResults.hasNext())
         {
             Entity listEntity = queryResults.next();
-            System.out.println(listEntity.toString());
             resultList.add(new PriorityListEntry(
                 Integer.parseInt(listEntity.getProperties().get(PROPERTY_SDK_ID).get().toString()),
                 Integer.parseInt(listEntity.getProperties().get(PROPERTY_AD_TYPE_ID).get().toString()),

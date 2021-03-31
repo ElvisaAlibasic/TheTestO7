@@ -25,9 +25,9 @@ public class BaseManager implements IBaseService
     }
 
     @Override
-    public LinkedList<IPriorityListEntry> getPriorityList()
+    public LinkedList<IPriorityListEntry> getPriorityList(int adTypeIdentifier, String countryCode)
     {
-        return dataStoreService.getPriorityList(1, "IT");
+        return dataStoreService.getPriorityList(adTypeIdentifier, countryCode);
     }
 
     @Override

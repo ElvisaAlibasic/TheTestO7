@@ -19,7 +19,7 @@ public interface IBaseService
      *
      * @return
      */
-    LinkedList<IPriorityListEntry> getPriorityList();
+    LinkedList<IPriorityListEntry> getPriorityList(int adTypeIdentifier, String countryCode);
 
     /**
      * Method used to update existing priority list, if there is none method creates it.

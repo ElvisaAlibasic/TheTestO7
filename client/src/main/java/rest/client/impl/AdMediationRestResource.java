@@ -24,11 +24,11 @@ public class AdMediationRestResource implements IAdMediationRestClient
     BaseManager baseManager = new BaseManager();
 
     @Override
-    public List<PriorityListRestEntry> getPriorityList()
+    public List<PriorityListRestEntry> getPriorityList(int adTypeIdentifier, String countryCode)
     {
         List<PriorityListRestEntry> resultList = new LinkedList<>();
 
-        LinkedList<IPriorityListEntry> priorityListEntries = baseManager.getPriorityList();
+        LinkedList<IPriorityListEntry> priorityListEntries = baseManager.getPriorityList(adTypeIdentifier, countryCode);
 
         for (IPriorityListEntry entry : priorityListEntries)
         {
@@ -62,13 +62,6 @@ public class AdMediationRestResource implements IAdMediationRestClient
             e.printStackTrace();
             return Response.status(500).build();
         }
-
-    }
-
-    public Response testRest(String blbla)
-    {
-        System.out.println(blbla);
-        return Response.status(200).entity("ACK_TEST").build();
 
     }
 }
