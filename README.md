@@ -15,7 +15,8 @@ Technology stack overview:
 
 ## How to access
 ### On Google
-- TODO add hosting url
+- Application is hosed on <code>http://celtic-ego-309013.oa.r.appspot.com/api/adMediation/</code> 
+Currently unavailable due to service account issues (waiting for response from google)
 ### Locally 
 - build with maven using <code>mvn clean package</code>
 - run <code>java -jar [PATH_TO]/TheTest.jar</code>
