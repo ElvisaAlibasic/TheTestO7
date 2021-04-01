@@ -14,7 +14,7 @@ Technology stack overview:
 - Resteasy
 
 ## How to access
-### On Google
+### On ApEngine
 - Application is hosed on <code>http://celtic-ego-309013.oa.r.appspot.com/api/adMediation/</code> 
 Currently unavailable due to service account issues (waiting for response from google)
 ### Locally 
