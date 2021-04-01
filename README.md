@@ -14,8 +14,14 @@ Technology stack overview:
 - Resteasy
 
 ## How to access
-- TODO add hosting url
-- TODO explain how to deploy
+### On Google
+- Application is hosed on <code>http://celtic-ego-309013.oa.r.appspot.com/api/adMediation/</code> 
+Currently unavailable due to service account issues (waiting for response from google)
+### Locally 
+- build with maven using <code>mvn clean package</code>
+- run <code>java -jar [PATH_TO]/TheTest.jar</code>
+
+## How to test
 - TODO provide Postman collection
 
 ## What is missing
