@@ -75,16 +75,31 @@ public class AdMediationRestResource implements IAdMediationRestClient
     {
         try
         {
-            return Response.status(200).entity(
-                baseManager.getRecommendedSDK(platform, osVersion, appName, appVersion, countryCode)).build();
+            HashMap<String, List<String>> resultRestEntryMap = new HashMap<>();
+            LinkedList<IPriorityListEntry> priorityList = baseManager.getRecommendedSDK(platform, osVersion, appName,
+                appVersion, countryCode);
+
+            for (IPriorityListEntry entry : priorityList)
+            {
+                List<String> sdkNameList = resultRestEntryMap.get(MAP_AD_ID_TO_NAME.get(entry.getAdTypeIdentifier()));
+
+                if (sdkNameList == null)
+                {
+                    sdkNameList = new LinkedList<>();
+                }
+                sdkNameList.add(MAP_AD_ID_TO_NAME.get(entry.getSkdIdentifier()));
+            }
+            return Response.status(200).entity(resultRestEntryMap).build();
         }
         catch (BaseServiceException e)
         {
             //TODO log
+            e.printStackTrace();
             return Response.status(400).build();
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return Response.status(500).build();
         }
     }
@@ -103,6 +118,7 @@ public class AdMediationRestResource implements IAdMediationRestClient
             }
             catch (BaseServiceException e)
             {
+                e.printStackTrace();
                 return Response.status(400).build();
             }
 
@@ -117,6 +133,7 @@ public class AdMediationRestResource implements IAdMediationRestClient
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return Response.status(500).build();
         }
 
@@ -141,10 +158,12 @@ public class AdMediationRestResource implements IAdMediationRestClient
         catch (BaseServiceException e)
         {
             // TODO log error
+            e.printStackTrace();
             return Response.status(400).build();
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return Response.status(500).build();
         }
 

@@ -39,7 +39,7 @@ public class BaseManager implements IBaseService
     DataStoreService dataStoreService = new DataStoreService();
 
     @Override
-    public int getRecommendedSDK(String platform, String osVersion, String appName, String appVersion,
+    public LinkedList<IPriorityListEntry> getRecommendedSDK(String platform, String osVersion, String appName, String appVersion,
         String countryCode) throws BaseServiceException
     {
         checkStringNotNullOrEmpty(countryCode);
@@ -70,7 +70,7 @@ public class BaseManager implements IBaseService
             priorityList = removeAll(priorityList, IPropertyFlags.SDK_AD_MOB_IDENTIFIER);
         }
 
-        return priorityList.get(0).getSkdIdentifier();
+        return priorityList;
     }
 
     @Override

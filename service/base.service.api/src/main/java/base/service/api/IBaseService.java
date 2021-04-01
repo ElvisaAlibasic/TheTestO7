@@ -14,7 +14,7 @@ import base.service.api.dto.IPriorityListEntry;
  */
 public interface IBaseService
 {
-    int getRecommendedSDK(String platform, String osVersion, String appName, String appVersion, String countryCode)
+    LinkedList<IPriorityListEntry> getRecommendedSDK(String platform, String osVersion, String appName, String appVersion, String countryCode)
         throws BaseServiceException;
 
     /**
