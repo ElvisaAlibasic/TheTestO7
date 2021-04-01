@@ -14,14 +14,15 @@ import base.service.api.dto.IPriorityListEntry;
  */
 public interface IBaseService
 {
-    int getRecommendedSDK(String platform, String osVersion, String appName, String appVersion, String countryCode);
+    int getRecommendedSDK(String platform, String osVersion, String appName, String appVersion, String countryCode)
+        throws BaseServiceException;
 
     /**
      * TODO
      *
      * @return
      */
-    LinkedList<IPriorityListEntry> getPriorityList(String countryCode);
+    LinkedList<IPriorityListEntry> getPriorityList(String countryCode) throws BaseServiceException;
 
     /**
      * Method used to update existing priority list, if there is none method creates it.

@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import base.service.api.BaseServiceException;
 import base.service.api.IPropertyFlags;
 import base.service.api.dto.IPriorityListEntry;
 import base.service.api.dto.impl.PriorityListEntry;
@@ -38,12 +39,14 @@ public class AdMediationRestResource implements IAdMediationRestClient
 
         adIdToNameMap.put(IPropertyFlags.SDK_ADX_IDENTIFIER, IPropertyFlags.SDK_ADX_NAME);
         adIdToNameMap.put(IPropertyFlags.SDK_AD_MOB_IDENTIFIER, IPropertyFlags.SDK_AD_MOB_NAME);
+        adIdToNameMap.put(IPropertyFlags.SDK_AD_MOB_OPT_OUT_IDENTIFIER, IPropertyFlags.SDK_AD_MOB_OPT_OUT_NAME);
         adIdToNameMap.put(IPropertyFlags.SDK_UNITY_ADS_IDENTIFIER, IPropertyFlags.SDK_UNITY_ADS_NAME);
         adIdToNameMap.put(IPropertyFlags.SDK_FACEBOOK_IDENTIFIER, IPropertyFlags.SDK_FACEBOOK_NAME);
         adIdToNameMap.put(IPropertyFlags.SDK_IRON_SOURCE_IDENTIFIER, IPropertyFlags.SDK_IRON_SOURCE_NAME);
 
         adNameToIdMap.put(IPropertyFlags.SDK_ADX_NAME, IPropertyFlags.SDK_ADX_IDENTIFIER);
         adNameToIdMap.put(IPropertyFlags.SDK_AD_MOB_NAME, IPropertyFlags.SDK_AD_MOB_IDENTIFIER);
+        adNameToIdMap.put(IPropertyFlags.SDK_AD_MOB_OPT_OUT_NAME, IPropertyFlags.SDK_AD_MOB_OPT_OUT_IDENTIFIER);
         adNameToIdMap.put(IPropertyFlags.SDK_UNITY_ADS_NAME, IPropertyFlags.SDK_UNITY_ADS_IDENTIFIER);
         adNameToIdMap.put(IPropertyFlags.SDK_FACEBOOK_NAME, IPropertyFlags.SDK_FACEBOOK_IDENTIFIER);
         adNameToIdMap.put(IPropertyFlags.SDK_IRON_SOURCE_NAME, IPropertyFlags.SDK_IRON_SOURCE_IDENTIFIER);
@@ -67,26 +70,56 @@ public class AdMediationRestResource implements IAdMediationRestClient
     }
 
     @Override
-    public String getRecommendedSDK(String platform, String osVersion, String appName, String appVersion,
+    public Response getRecommendedSDK(String platform, String osVersion, String appName, String appVersion,
         String countryCode)
     {
-        return String.valueOf(baseManager.getRecommendedSDK(platform, osVersion, appName, appVersion, countryCode));
+        try
+        {
+            return Response.status(200).entity(
+                baseManager.getRecommendedSDK(platform, osVersion, appName, appVersion, countryCode)).build();
+        }
+        catch (BaseServiceException e)
+        {
+            //TODO log
+            return Response.status(400).build();
+        }
+        catch (Exception e)
+        {
+            return Response.status(500).build();
+        }
     }
 
     @Override
-    public List<PriorityListRestEntry> getPriorityList(String countryCode)
+    public Response getPriorityList(String countryCode)
     {
         List<PriorityListRestEntry> resultList = new LinkedList<>();
 
-        LinkedList<IPriorityListEntry> priorityListEntries = baseManager.getPriorityList(countryCode);
-
-        for (IPriorityListEntry entry : priorityListEntries)
+        LinkedList<IPriorityListEntry> priorityListEntries = null;
+        try
         {
-            resultList.add(new PriorityListRestEntry(MAP_AD_ID_TO_NAME.get(entry.getSkdIdentifier()),
-                MAP_TYPE_ID_TO_TYPE_NAME.get(entry.getAdTypeIdentifier()), entry.getCountryCode(), entry.getScore()));
+            try
+            {
+                priorityListEntries = baseManager.getPriorityList(countryCode);
+            }
+            catch (BaseServiceException e)
+            {
+                return Response.status(400).build();
+            }
+
+            for (IPriorityListEntry entry : priorityListEntries)
+            {
+                resultList.add(new PriorityListRestEntry(MAP_AD_ID_TO_NAME.get(entry.getSkdIdentifier()),
+                    MAP_TYPE_ID_TO_TYPE_NAME.get(entry.getAdTypeIdentifier()), entry.getCountryCode(),
+                    entry.getScore()));
+            }
+            return Response.status(200).entity(resultList).build();
+
+        }
+        catch (Exception e)
+        {
+            return Response.status(500).build();
         }
 
-        return resultList;
     }
 
     public Response updatePriorityList(List<PriorityListRestEntry> priorityList)
@@ -105,9 +138,13 @@ public class AdMediationRestResource implements IAdMediationRestClient
             LinkedList<IPriorityListEntry> list = baseManager.updatePriorityList(convertedList);
             return Response.status(202).build();
         }
+        catch (BaseServiceException e)
+        {
+            // TODO log error
+            return Response.status(400).build();
+        }
         catch (Exception e)
         {
-            e.printStackTrace();
             return Response.status(500).build();
         }
 

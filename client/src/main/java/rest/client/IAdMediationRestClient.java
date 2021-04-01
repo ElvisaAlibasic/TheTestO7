@@ -24,7 +24,7 @@ public interface IAdMediationRestClient
     @GET
     @Path("/sdk")
     @Produces({ MediaType.APPLICATION_JSON })
-    String getRecommendedSDK(@QueryParam(QUERY_PARAM_PLATFORM) String platform,
+    Response getRecommendedSDK(@QueryParam(QUERY_PARAM_PLATFORM) String platform,
         @QueryParam(QUERY_PARAM_OS_VERSION) String osVersion, @QueryParam(QUERY_PARAM_APP_NAME) String appName,
         @QueryParam(QUERY_PARAM_APP_VERSION) String appVersion,
         @QueryParam(QUERY_PARAM_COUNTRY_CODE) String countryCode);
@@ -32,7 +32,7 @@ public interface IAdMediationRestClient
     @GET
     @Path("/getRawList")
     @Produces({ MediaType.APPLICATION_JSON })
-    List<PriorityListRestEntry> getPriorityList(@QueryParam(QUERY_PARAM_COUNTRY_CODE) String countryCode);
+    Response getPriorityList(@QueryParam(QUERY_PARAM_COUNTRY_CODE) String countryCode);
 
     @POST
     @Path("/updateList")
