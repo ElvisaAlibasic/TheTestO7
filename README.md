@@ -19,7 +19,7 @@ Technology stack overview:
 Currently unavailable due to service account issues (waiting for response from google)
 ### Locally 
 - build with maven using <code>mvn clean package</code>
-- run <code>java -jar [PATH_TO]/TheTest.jar</code>
+- run <code>java -jar [PATH_TO]product/base/target/TheTest.jar</code>
 
 ## How to test
 - TODO provide Postman collection
