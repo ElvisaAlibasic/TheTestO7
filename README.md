@@ -29,3 +29,4 @@ Currently unavailable due to service account issues (waiting for response from g
 - Setup logging
 - Service orchestration
 - First time using Datastore, so probably messed up a few things there
+- Additional code cleanup of poms
