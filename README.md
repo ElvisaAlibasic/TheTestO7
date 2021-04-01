@@ -14,8 +14,13 @@ Technology stack overview:
 - Resteasy
 
 ## How to access
+### On Google
 - TODO add hosting url
-- TODO explain how to deploy
+### Locally 
+- build with maven using <code>mvn clean package</code>
+- run <code>java -jar [PATH_TO]/TheTest.jar</code>
+
+## How to test
 - TODO provide Postman collection
 
 ## What is missing
