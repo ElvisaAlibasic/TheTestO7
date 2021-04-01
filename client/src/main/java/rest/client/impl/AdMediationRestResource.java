@@ -152,7 +152,7 @@ public class AdMediationRestResource implements IAdMediationRestClient
 
         try
         {
-            LinkedList<IPriorityListEntry> list = baseManager.updatePriorityList(convertedList);
+            baseManager.updatePriorityList(convertedList);
             return Response.status(202).build();
         }
         catch (BaseServiceException e)

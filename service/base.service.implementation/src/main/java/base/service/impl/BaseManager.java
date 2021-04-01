@@ -81,13 +81,12 @@ public class BaseManager implements IBaseService
     }
 
     @Override
-    public LinkedList<IPriorityListEntry> updatePriorityList(LinkedList<IPriorityListEntry> priorityList)
+    public void updatePriorityList(LinkedList<IPriorityListEntry> priorityList)
         throws BaseServiceException
     {
         checkListNotNullOrEmpty(priorityList);
 
         dataStoreService.updatePriorityList(priorityList);
-        return priorityList;
     }
 
 
