@@ -21,15 +21,15 @@ public class BaseManager implements IBaseService
 {
 
     // messages
-    private final static String MSG_ERROR_REQUIRED_PARAMETER_IS_NULL_OR_EMPTY = ("Provided required parameter is null"
+    private static final String MSG_ERROR_REQUIRED_PARAMETER_IS_NULL_OR_EMPTY = ("Provided required parameter is null"
         + " or empty.");
 
     // this could be retrieved by external system, as there is always possibility for the ISO standard to change
-    private final static String COUNTRY_CODE_CHINA = "CN";
-    private final static String COUNTRY_CODE_CUBA = "CU";
-    private final static String COUNTRY_CODE_IRAN = "IR";
-    private final static String COUNTRY_CODE_BANGLADESH = "BD";
-    private final static String COUNTRY_CODE_VIETNAM = "VN";
+    private static final String COUNTRY_CODE_CHINA = "CN";
+    private static final String COUNTRY_CODE_CUBA = "CU";
+    private static final String COUNTRY_CODE_IRAN = "IR";
+    private static final String COUNTRY_CODE_BANGLADESH = "BD";
+    private static final String COUNTRY_CODE_VIETNAM = "VN";
 
     public BaseManager()
     {
@@ -39,8 +39,8 @@ public class BaseManager implements IBaseService
     DataStoreService dataStoreService = new DataStoreService();
 
     @Override
-    public LinkedList<IPriorityListEntry> getRecommendedSDK(String platform, String osVersion, String appName, String appVersion,
-        String countryCode) throws BaseServiceException
+    public LinkedList<IPriorityListEntry> getRecommendedSDK(String platform, String osVersion, String appName,
+        String appVersion, String countryCode) throws BaseServiceException
     {
         checkStringNotNullOrEmpty(countryCode);
         checkStringNotNullOrEmpty(osVersion);
@@ -81,8 +81,7 @@ public class BaseManager implements IBaseService
     }
 
     @Override
-    public void updatePriorityList(LinkedList<IPriorityListEntry> priorityList)
-        throws BaseServiceException
+    public void updatePriorityList(LinkedList<IPriorityListEntry> priorityList) throws BaseServiceException
     {
         checkListNotNullOrEmpty(priorityList);
 
