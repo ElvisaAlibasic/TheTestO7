@@ -10,7 +10,6 @@ indexes:
     
 - kind: PriorityListEntry
   properties:
-  - name: adTypeId
   - name: countryCode
   - name: score
     direction: desc    

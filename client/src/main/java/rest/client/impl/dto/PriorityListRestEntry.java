@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class PriorityListRestEntry implements Serializable
 {
 
-    private int skdIdentifier;
-    private int adTypeIdentifier;
+    private String skdName;
+    private String adTypeName;
     private String countryCode;
     private int score;
 
-    public PriorityListRestEntry(int skdIdentifier, int adTypeIdentifier, String countryCode, int score)
+    public PriorityListRestEntry(String skdName, String adTypeName, String countryCode, int score)
     {
-        this.skdIdentifier = skdIdentifier;
-        this.adTypeIdentifier = adTypeIdentifier;
+        this.skdName = skdName;
+        this.adTypeName = adTypeName;
         this.countryCode = countryCode;
         this.score = score;
     }
@@ -22,14 +22,14 @@ public class PriorityListRestEntry implements Serializable
     {
     }
 
-    public int getSkdIdentifier()
+    public String getSkdName()
     {
-        return this.skdIdentifier;
+        return this.skdName;
     }
 
-    public int getAdTypeIdentifier()
+    public String getAdTypeName()
     {
-        return this.adTypeIdentifier;
+        return this.adTypeName;
     }
 
     public String getCountryCode()
@@ -45,8 +45,8 @@ public class PriorityListRestEntry implements Serializable
     public String toString()
     {
         final StringBuilder sb = new StringBuilder("PriorityListRestEntry{");
-        sb.append("skdIdentifier=").append(skdIdentifier);
-        sb.append(", adTypeIdentifier=").append(adTypeIdentifier);
+        sb.append("skdName=").append(skdName);
+        sb.append(", adTypeName=").append(adTypeName);
         sb.append(", countryCode='").append(countryCode).append('\'');
         sb.append(", score=").append(score);
         sb.append('}');

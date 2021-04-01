@@ -25,10 +25,12 @@ public interface IDataStoreClient
     /**
      * Method used to retrieve priority list of particular SDK's depending on provided criteria. Priority is ranked in
      * descending order, sorting is done based on {@link IPriorityListEntry#getScore()} attribute.
+     * <p>
+     * Returned priority list is effectively representation of priority as proposed by external pipeline system, meaning
+     * no additional post-filtering is NOT done by any bossiness logic.
      *
-     * @param adTypeIdentifier required {@link Integer} identifier of ad type.
-     * @param countryCode      required {@link String} ISO-3166 standard country code.
+     * @param countryCode required {@link String} ISO-3166 standard country code.
      * @return {@link LinkedList} of {@link IPriorityListEntry} prioritized list.
      */
-    LinkedList<IPriorityListEntry> getPriorityList(int adTypeIdentifier, String countryCode);
+    LinkedList<IPriorityListEntry> getPriorityList(String countryCode);
 }

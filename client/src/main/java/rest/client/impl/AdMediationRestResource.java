@@ -1,5 +1,6 @@
 package rest.client.impl;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import base.service.api.IPropertyFlags;
 import base.service.api.dto.IPriorityListEntry;
 import base.service.api.dto.impl.PriorityListEntry;
 import base.service.impl.BaseManager;
@@ -23,25 +25,65 @@ public class AdMediationRestResource implements IAdMediationRestClient
     // TODO this is wrong, service should be accessed via service orchestration
     BaseManager baseManager = new BaseManager();
 
-    @Override
-    public String getRecommendedSDK(int adTypeIdentifier, String countryCode)
+    static HashMap<Integer, String> MAP_AD_ID_TO_NAME;
+    static HashMap<String, Integer> MAP_AD_NAME_TO_ID;
+    static HashMap<Integer, String> MAP_TYPE_ID_TO_TYPE_NAME;
+    static HashMap<String, Integer> MAP_TYPE_NAME_TO_TYPE_ID;
+
+    static
     {
-        //TODO convert to human readable
-        return String.valueOf(baseManager.getRecommendedSDK(adTypeIdentifier, countryCode));
+        // TODO this should be in DB
+        HashMap<Integer, String> adIdToNameMap = new HashMap<>();
+        HashMap<String, Integer> adNameToIdMap = new HashMap<>();
+
+        adIdToNameMap.put(IPropertyFlags.SDK_ADX_IDENTIFIER, IPropertyFlags.SDK_ADX_NAME);
+        adIdToNameMap.put(IPropertyFlags.SDK_AD_MOB_IDENTIFIER, IPropertyFlags.SDK_AD_MOB_NAME);
+        adIdToNameMap.put(IPropertyFlags.SDK_UNITY_ADS_IDENTIFIER, IPropertyFlags.SDK_UNITY_ADS_NAME);
+        adIdToNameMap.put(IPropertyFlags.SDK_FACEBOOK_IDENTIFIER, IPropertyFlags.SDK_FACEBOOK_NAME);
+        adIdToNameMap.put(IPropertyFlags.SDK_IRON_SOURCE_IDENTIFIER, IPropertyFlags.SDK_IRON_SOURCE_NAME);
+
+        adNameToIdMap.put(IPropertyFlags.SDK_ADX_NAME, IPropertyFlags.SDK_ADX_IDENTIFIER);
+        adNameToIdMap.put(IPropertyFlags.SDK_AD_MOB_NAME, IPropertyFlags.SDK_AD_MOB_IDENTIFIER);
+        adNameToIdMap.put(IPropertyFlags.SDK_UNITY_ADS_NAME, IPropertyFlags.SDK_UNITY_ADS_IDENTIFIER);
+        adNameToIdMap.put(IPropertyFlags.SDK_FACEBOOK_NAME, IPropertyFlags.SDK_FACEBOOK_IDENTIFIER);
+        adNameToIdMap.put(IPropertyFlags.SDK_IRON_SOURCE_NAME, IPropertyFlags.SDK_IRON_SOURCE_IDENTIFIER);
+
+        MAP_AD_ID_TO_NAME = new HashMap<>(adIdToNameMap);
+        MAP_AD_NAME_TO_ID = new HashMap<>(adNameToIdMap);
+
+        HashMap<Integer, String> typeIdToNameMap = new HashMap<>();
+        HashMap<String, Integer> typeNameToIdMap = new HashMap<>();
+
+        typeIdToNameMap.put(IPropertyFlags.AD_TYPE_BANNER_ID, IPropertyFlags.AD_TYPE_BANNER_NAME);
+        typeIdToNameMap.put(IPropertyFlags.AD_TYPE_INTERSTITIAL_ID, IPropertyFlags.AD_TYPE_INTERSTITIAL_NAME);
+        typeIdToNameMap.put(IPropertyFlags.AD_TYPE_REWARDED_VIDEO_ID, IPropertyFlags.AD_TYPE_REWARDED_VIDEO_NAME);
+
+        typeNameToIdMap.put(IPropertyFlags.AD_TYPE_BANNER_NAME, IPropertyFlags.AD_TYPE_BANNER_ID);
+        typeNameToIdMap.put(IPropertyFlags.AD_TYPE_INTERSTITIAL_NAME, IPropertyFlags.AD_TYPE_INTERSTITIAL_ID);
+        typeNameToIdMap.put(IPropertyFlags.AD_TYPE_REWARDED_VIDEO_NAME, IPropertyFlags.AD_TYPE_REWARDED_VIDEO_ID);
+
+        MAP_TYPE_ID_TO_TYPE_NAME = new HashMap<>(typeIdToNameMap);
+        MAP_TYPE_NAME_TO_TYPE_ID = new HashMap<>(typeNameToIdMap);
     }
 
     @Override
-    public List<PriorityListRestEntry> getPriorityList(int adTypeIdentifier, String countryCode)
+    public String getRecommendedSDK(String platform, String osVersion, String appName, String appVersion,
+        String countryCode)
+    {
+        return String.valueOf(baseManager.getRecommendedSDK(platform, osVersion, appName, appVersion, countryCode));
+    }
+
+    @Override
+    public List<PriorityListRestEntry> getPriorityList(String countryCode)
     {
         List<PriorityListRestEntry> resultList = new LinkedList<>();
 
-        LinkedList<IPriorityListEntry> priorityListEntries = baseManager.getPriorityList(adTypeIdentifier, countryCode);
+        LinkedList<IPriorityListEntry> priorityListEntries = baseManager.getPriorityList(countryCode);
 
         for (IPriorityListEntry entry : priorityListEntries)
         {
-            resultList.add(
-                new PriorityListRestEntry(entry.getSkdIdentifier(), entry.getAdTypeIdentifier(), entry.getCountryCode(),
-                    entry.getScore()));
+            resultList.add(new PriorityListRestEntry(MAP_AD_ID_TO_NAME.get(entry.getSkdIdentifier()),
+                MAP_TYPE_ID_TO_TYPE_NAME.get(entry.getAdTypeIdentifier()), entry.getCountryCode(), entry.getScore()));
         }
 
         return resultList;
@@ -54,9 +96,8 @@ public class AdMediationRestResource implements IAdMediationRestClient
 
         for (PriorityListRestEntry entry : priorityList)
         {
-            convertedList.add(
-                new PriorityListEntry(entry.getSkdIdentifier(), entry.getAdTypeIdentifier(), entry.getCountryCode(),
-                    entry.getScore()));
+            convertedList.add(new PriorityListEntry(MAP_AD_NAME_TO_ID.get(entry.getSkdName()),
+                MAP_TYPE_NAME_TO_TYPE_ID.get(entry.getAdTypeName()), entry.getCountryCode(), entry.getScore()));
         }
 
         try

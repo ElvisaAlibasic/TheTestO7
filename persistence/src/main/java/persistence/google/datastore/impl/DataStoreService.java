@@ -90,14 +90,12 @@ public final class DataStoreService implements IDataStoreClient
     }
 
     @Override
-    public LinkedList<IPriorityListEntry> getPriorityList(int adTypeIdentifier, String countryCode)
+    public LinkedList<IPriorityListEntry> getPriorityList(String countryCode)
     {
         LinkedList<IPriorityListEntry> resultList = new LinkedList<>();
 
         Query<Entity> query = Query.newEntityQueryBuilder().setKind(PRIORITY_LIST_ENTRY_KIND).setFilter(
-            CompositeFilter.and(PropertyFilter.eq(PROPERTY_AD_TYPE_ID, adTypeIdentifier),
-                PropertyFilter.eq(PROPERTY_COUNTRY_CODE, countryCode))).setOrderBy(
-            OrderBy.desc(PROPERTY_SCORE)).build();
+            PropertyFilter.eq(PROPERTY_COUNTRY_CODE, countryCode)).setOrderBy(OrderBy.desc(PROPERTY_SCORE)).build();
 
         QueryResults<Entity> queryResults = datastore.run(query);
 
