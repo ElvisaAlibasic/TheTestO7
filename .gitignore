@@ -33,7 +33,7 @@
 # .idea/compiler.xml
 # .idea/jarRepositories.xml
 # .idea/modules.xml
-# .idea/*.iml
+.idea/*.iml
 # .idea/modules
 mvn*.iml
 # *.ipr
@@ -68,6 +68,8 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+*.iml
+
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
@@ -77,3 +79,4 @@ product/base/target
 product/communication/target
 service/target
 service/.idea
+celtic-ego-309013-84a3d9e7d9ff.json
